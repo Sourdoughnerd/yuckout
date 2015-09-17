@@ -12,28 +12,18 @@
       #map {
         height: 100%;
       }
-#floating-panel {
-  position: absolute;
-  top: 10px;
-  left: 25%;
-  z-index: 5;
-  background-color: #fff;
-  padding: 5px;
-  border: 1px solid #999;
-  text-align: center;
-  font-family: 'Roboto','sans-serif';
-  line-height: 30px;
-  padding-left: 10px;
-}
-
       #floating-panel {
-        background-color: #fff;
-        border: 1px solid #999;
-        left: 25%;
-        padding: 5px;
         position: absolute;
         top: 10px;
+        left: 25%;
         z-index: 5;
+        background-color: #fff;
+        padding: 5px;
+        border: 1px solid #999;
+        text-align: center;
+        font-family: 'Roboto','sans-serif';
+        line-height: 30px;
+        padding-left: 10px;
       }
     </style>
   </head>
@@ -47,8 +37,6 @@
     </div>
     -->
     <div id="map"></div>
-
-
   <script type="text/javascript" src="http://underscorejs.org/underscore.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   <!--
@@ -114,12 +102,24 @@
 
     // Get json from the SODA API
     $.getJSON(sodaUrl, function(rawData) {
-      green_weight=10
-      yellow_weight=420
-      red_weight=1180
+      var green_weight=5
+      var yellow_weight=10
+      var red_weight=20
 
       var heatmapcoords = []
+      var contentString
       var color
+
+      // change the lat and lng here to center around another area, like SF
+      // or both Alameda County and SF County
+      map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 10,
+        center: {lat: 37.6425969, lng: -122.0652411},
+        mapTypeId: google.maps.MapTypeId.SATELLITE
+      });
+
+      var infowindow = new google.maps.InfoWindow();
+
       for(var i=0; i < rawData.length; i++){
         console.log("Facility name: ", rawData[i].facility_name)
         console.log("Lat: ", rawData[i].location_1["latitude"])
@@ -135,16 +135,52 @@
         } 
 
         heatmapcoords.push({location:new google.maps.LatLng(rawData[i].location_1["latitude"],rawData[i].location_1["longitude"]), weight:color})
+
+        // add markers and infowindows to the map, infowindows provide more 
+        // information to users who click on the markers
+        contentString = '<div id="content">'+
+        '<div id="siteNotice">'+
+        '</div>'+
+        '<h1 id="firstHeading" class="firstHeading">'+ rawData[i].facility_name +'</h1>'+
+        '<div id="bodyContent">'+
+        '<p>Stuff and things.</p>'+
+        '<p><b>Violation Description:</b>'+
+        rawData[i].violation_description
+        '</p>'+
+        '</div>'+
+        '</div>';
+
+        var infowindow = new google.maps.InfoWindow({
+          content: contentString
+        });
+
+        // add marker with lat and lng from our JSON data
+        console.log("TEST: ", rawData[i].location_1["latitude"], rawData[i].location_1["longitude"])
+
+
+        var rest_latlng = {lat: parseFloat(rawData[i].location_1["latitude"]), lng: parseFloat(rawData[i].location_1["longitude"])};
+
+        var marker = new google.maps.Marker({
+          position: rest_latlng,
+          map: map,
+          title: rawData[i].facility_name
+        });
+
+        marker.addListener('click', function() {
+          //infowindow.open(map, marker);
+          infowindow.setContent(contentString);
+          infowindow.open(map, this);
+        });
+
       }
-      map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 10,
-        center: {lat: 37.6425969, lng: -122.0652411},
-        mapTypeId: google.maps.MapTypeId.SATELLITE
-      });
+
+
       var heatmap = new google.maps.visualization.HeatmapLayer({
         data: heatmapcoords
       });
       heatmap.setMap(map);
+
+      
     });
   });
   </script>
