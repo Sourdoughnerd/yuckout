@@ -152,17 +152,12 @@
     <script>
     var markers = []
     $(window).load(function() {
-      $('#contact').hide()
-      $('#about').hide()
-
-
       $('#aboutme').click(function(){
         $('#map').hide()
         $('#floating-panel').hide()
         $('#contact').hide()
         $('#about').show()
       });
-
 
       $('.contactme').click(function(){
         $('#map').hide()
@@ -202,7 +197,6 @@
 
       var heatmapcoords = []
       var violation_data_by_name = {}
-      var contentString
       var color
 
       // change the lat and lng here to center around another area, like SF
@@ -210,8 +204,8 @@
       map = new google.maps.Map(document.getElementById('map'), {
         zoom: 10,
         center: {lat: 37.6425969, lng: -122.0652411},
-        mapTypeId: google.maps.MapTypeId.SATELLITE,
-        disableDefaultUI: true
+        mapTypeId: google.maps.MapTypeId.MAP,
+        disableDefaultUI: false
       });
 
       var infowindow = new google.maps.InfoWindow();
@@ -294,8 +288,6 @@
         heatmap.setMap(map);
       }
     });
-
-       
 
     // Sets the map on all markers in the array.
     function setMapOnAll(map) {
