@@ -1,8 +1,22 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <title>YuckOut!</title>
-</head>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>YuckOut!</title>
+
+    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="http://getbootstrap.com/examples/navbar/navbar.css" rel="stylesheet">
+
+    <script src="http://getbootstrap.com/assets/js/ie-emulation-modes-warning.js"></script>
+
 <style>
       html, body {
         height: 100%;
@@ -10,103 +24,184 @@
         padding: 0;
       }
       #map {
-        height: 100%;
+         height: 80%;
+        
+        bottom: 0;
       }
       #floating-panel {
         position: absolute;
-        top: 10px;
-        left: 25%;
+        bottom: 10%;
+        margin: auto;
         z-index: 5;
         background-color: #fff;
-        padding: 5px;
+        padding: 0px;
         border: 1px solid #999;
         text-align: center;
         font-family: 'Roboto','sans-serif';
         line-height: 30px;
-        padding-left: 10px;
+      }
+      .container {
+        border: 0px;
+      }
+      #contact {
+        color: black;
+      }
+      #about {
+        color: black;
       }
     </style>
+    <!-- IE support courtesy of bootstrap-->
   </head>
   <body>
-  <!-- for future button / heatmap layer usage
-    <div id="floating-panel">
-      <button onclick="toggleHeatmap()">Toggle Heatmap</button>
-      <button onclick="changeGradient()">Change gradient</button>
-      <button onclick="changeRadius()">Change radius</button>
-      <button onclick="changeOpacity()">Change opacity</button>
-    </div>
-    -->
-    <div id="map"></div>
-  <script type="text/javascript" src="http://underscorejs.org/underscore.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-  <!--
-  <script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBy9ULJF2FHGuQfBTAzq9pk6GXp4Eib5MU&callback=initMap">
-  </script>
-  <script type="text/javascript" src="heatmap.js"></script>
-  <script type="text/javascript" src="gmaps-heatmap.js"></script>
-  -->
+  
+    <div class="container">
 
-  <script>
-  $(window).load(function() {
-    // API Call
-    var sodaUrl = "https://data.acgov.org/resource/3d5b-2rnz.json";
-    // "https://data.acgov.org/resource/3d5b-2rnz.json?$where=date>'2014-09-01' AND date<'2014-10-01' AND zip_code='11201' AND date IS NOT NULL&$order=date ASC;"
+      <!-- Static navbar -->
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">YuckOut!</a>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <span id="home"><li class="active"><a href="#">Home</a></li></span>
+              <span id="aboutme"><li><a href="#">About</a></li></span>
+              <span class="contactme"><li><a href="#">Contact</a></li></span>
+              <span class="bottlecalc"><li><a target=_blank href="http://www.ca.gov/OnlineServices/OS_Consumers_inspections.html">California State Food Link</a></li></span>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
+      </nav>  
+</div> <!-- /container -->
+ <div id="floating-panel">
+    <input onclick="clearMarkers();" type=button value="Hide Markers">
+    <input onclick="showMarkers();" type=button value="Show All Markers">
+  </div>
+<div id="map"></div>
 
-/*
-    function initMap() {
-      map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 13,
-        center: {lat: 37.6801034, lng: -121.9059393},
-        mapTypeId: google.maps.MapTypeId.SATELLITE
+<section id="about" style="display: none;">
+  <div class="container">
+      <div class="row">
+          <div class="col-lg-12 text-center">
+              <h2>A little bit About Me</h2>
+              <p class="lead"><i>A bit more about me....I like to BBQ and practice coding. Also baking.
+              I hope to attend Hack Reactor to polish and expand my skills and portfolio! Contact me by <a class="blue" target=_blank href="mailto:graceh [REMOVE THIS AND REPLACE] absoludicrous.com">Clicking Here</a>
+              </i></p>
+          </div>
+      </div>
+      <!-- /.row -->
+  </div>
+  <!-- /.container -->
+</section>
+
+<section id="contact" style="display: none;">
+  <div class="container">
+  <!-- form to contact with info -->
+    <h4>Please get in touch about YuckOut!!</h4>
+    <form action="//formspree.io/graceh@absoludicrous.com" method="POST">
+      <div class="form-group">
+        <label for="visitoremail">Email address</label>
+        <input type="email" class="form-control" id="visitoremail" placeholder="Email">
+      </div>
+      
+      <div class="form-group">
+        <label for="visitorname">Please Enter Your Full Name</label>
+        <input type="text" class="form-control" id="visitorname" placeholder="First Last">
+        <p class="help-block">Questions? Concerns? Wanna hear more?. Please leave your feedback and which county you're from!</p>
+      </div>
+      <div>
+        <textarea class="form-control" rows="3"></textarea>
+      </div>
+      <div class="checkbox">
+        <p class="checkbox>">How many times do you eat out per month?</p>
+        <label>
+          <input type="checkbox"> 1 to 5 occations dining out per month
+        </label>
+       <label>
+         <input type="checkbox"> 5+ occations dinging out per month
+        </label>
+      </div>
+      <button type="submit" class="btn btn-default">Submit</button>
+    </form> 
+  </div>
+</section>
+
+<footer style="color: gray; text-align: center;">
+  <a href="https://twitter.com/share" class="twitter-share-button">Tweet</a>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+</footer>
+
+
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://getbootstrap.com/dist/js/bootstrap.min.js"></script>
+    <!-- courtest of Bootstrao - IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="http://getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js"></script>
+   
+
+    <script type="text/javascript" src="http://underscorejs.org/underscore.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+    <script>
+    var markers = []
+    $(window).load(function() {
+      $('#contact').hide()
+      $('#about').hide()
+
+
+      $('#aboutme').click(function(){
+        $('#map').hide()
+        $('#floating-panel').hide()
+        $('#contact').hide()
+        $('#about').show()
       });
 
-      heatmap = new google.maps.visualization.HeatmapLayer({
-        data: get_heatmapdata(),
-        map: map
+
+      $('.contactme').click(function(){
+        $('#map').hide()
+        $('#floating-panel').hide()
+        $('#about').hide()
+        $('#contact').show()
       });
-    }
 
-    function toggleHeatmap() {
-      heatmap.setMap(heatmap.getMap() ? null : map);
-    }
+      $('#home').click(function(){
+        $('#contact').hide()
+        $('#about').hide()
+        $('#map').show()
+        $('#floating-panel').show()
+      });
 
-    function changeGradient() {
-      var gradient = [
-        'rgba(0, 255, 255, 0)',
-        'rgba(0, 255, 255, 1)',
-        'rgba(0, 191, 255, 1)',
-        'rgba(0, 127, 255, 1)',
-        'rgba(0, 63, 255, 1)',
-        'rgba(0, 0, 255, 1)',
-        'rgba(0, 0, 223, 1)',
-        'rgba(0, 0, 191, 1)',
-        'rgba(0, 0, 159, 1)',
-        'rgba(0, 0, 127, 1)',
-        'rgba(63, 0, 91, 1)',
-        'rgba(127, 0, 63, 1)',
-        'rgba(191, 0, 31, 1)',
-        'rgba(255, 0, 0, 1)'
-      ]
-      heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
-    }
+      // API Call
+      //var sodaUrl = "https://data.acgov.org/resource/3d5b-2rnz.json?$where=activity_date>'2014-01-01' AND (resource_code IS NOT NULL) AND (resource_code!='G' AND resource_code!='g');";
+      var sodaUrl = "https://data.acgov.org/resource/3d5b-2rnz.json?$where=activity_date>'2014-01-01' AND resource_code='R';";
 
-    function changeRadius() {
-      heatmap.set('radius', heatmap.get('radius') ? null : 20);
-    }
+      // Get json from the SODA API
+      function create_marker(location,title,content) {
+        var marker = new google.maps.Marker({
+            position: location,
+            title: title,
+            map: map
+        });
+        google.maps.event.addListener(marker, 'mouseover', function () {
+          infowindow.setContent(content);
+          infowindow.open(map, marker);
+        });
+        markers.push(marker);
+      }
 
-    function changeOpacity() {
-      heatmap.set('opacity', heatmap.get('opacity') ? null : 0.2);
-    }
-    */
-
-    // Get json from the SODA API
-    $.getJSON(sodaUrl, function(rawData) {
       var green_weight=5
       var yellow_weight=10
       var red_weight=20
 
       var heatmapcoords = []
+      var violation_data_by_name = {}
       var contentString
       var color
 
@@ -115,77 +210,113 @@
       map = new google.maps.Map(document.getElementById('map'), {
         zoom: 10,
         center: {lat: 37.6425969, lng: -122.0652411},
-        mapTypeId: google.maps.MapTypeId.SATELLITE
+        mapTypeId: google.maps.MapTypeId.SATELLITE,
+        disableDefaultUI: true
       });
 
       var infowindow = new google.maps.InfoWindow();
 
-      for(var i=0; i < rawData.length; i++){
-        console.log("Facility name: ", rawData[i].facility_name)
-        console.log("Lat: ", rawData[i].location_1["latitude"])
-        console.log("Long: ", rawData[i].location_1["longitude"])
-        console.log("Resource code: ", rawData[i].resource_code)
-      
-        if ( rawData[i].resource_code === 'r' ) {
-          color = red_weight
-        } else if ( rawData[i].resource_code === 'g' ) {
-          color = green_weight
-        } else if ( rawData[i].resource_code === 'y' ) {
-          color = yellow_weight
-        } 
+      $.getJSON(sodaUrl, function(rawData) {
+        for(var i=0; i < rawData.length; i++){
+          if ( rawData[i].resource_code === 'r' ) {
+            color = red_weight
+          } else if ( rawData[i].resource_code === 'g' ) {
+            color = green_weight
+          } else if ( rawData[i].resource_code === 'y' ) {
+            color = yellow_weight
+          }    
+            
+          if ( !violation_data_by_name.hasOwnProperty(rawData[i].facility_name)) {
+            violation_data_by_name[rawData[i].facility_name] = {latitude: rawData[i].location_1["latitude"], longitude: rawData[i].location_1["longitude"], violations: []}
+          }
+          
+          violation_data_by_name[rawData[i].facility_name]["violations"].push({violation_description: rawData[i].violation_description, date: rawData[i].activity_date})
+    
+          heatmapcoords.push({location:new google.maps.LatLng(rawData[i].location_1["latitude"],rawData[i].location_1["longitude"]), weight:color})          
+        }
 
-        heatmapcoords.push({location:new google.maps.LatLng(rawData[i].location_1["latitude"],rawData[i].location_1["longitude"]), weight:color})
-
-        // add markers and infowindows to the map, infowindows provide more 
-        // information to users who click on the markers
-        contentString = '<div id="content">'+
-        '<div id="siteNotice">'+
-        '</div>'+
-        '<h1 id="firstHeading" class="firstHeading">'+ rawData[i].facility_name +'</h1>'+
-        '<div id="bodyContent">'+
-        '<p>Stuff and things.</p>'+
-        '<p><b>Violation Description:</b>'+
-        rawData[i].violation_description
-        '</p>'+
-        '</div>'+
-        '</div>';
-
-        var infowindow = new google.maps.InfoWindow({
-          content: contentString
-        });
-
-        // add marker with lat and lng from our JSON data
-        console.log("TEST: ", rawData[i].location_1["latitude"], rawData[i].location_1["longitude"])
-
-
-        var rest_latlng = {lat: parseFloat(rawData[i].location_1["latitude"]), lng: parseFloat(rawData[i].location_1["longitude"])};
-
-        var marker = new google.maps.Marker({
-          position: rest_latlng,
-          map: map,
-          title: rawData[i].facility_name
-        });
-
-        marker.addListener('click', function() {
-          //infowindow.open(map, marker);
-          infowindow.setContent(contentString);
-          infowindow.open(map, this);
-        });
-
-      }
-
-
-      var heatmap = new google.maps.visualization.HeatmapLayer({
-        data: heatmapcoords
+        mark_the_map()
       });
-      heatmap.setMap(map);
 
+      function mark_the_map() {
+        console.log("processing !!!!")
+        for (var facility_name in violation_data_by_name) {
+          
+          var content_string = '<div id="content">' +
+            '<div id="siteNotice">' +
+            '</div>' +
+            '<h1 id="firstHeading" class="firstHeading">' + facility_name + '</h1>' +
+            '<div id="bodyContent">' +
+            '<p><b>This restaurant probably struggles with:</b>' +
+            '<ul>';
+
+          console.log("length: ", violation_data_by_name[facility_name]["violations"].length)
+          for ( var i = 0; i < violation_data_by_name[facility_name]["violations"].length; i++ ) {
+            console.log("violation: ", violation_data_by_name[facility_name]["violations"][i].violation_description)
+            content_string += '<li>' + violation_data_by_name[facility_name]["violations"][i].violation_description + '</li>'
+          }
       
+          content_string += '</ul>' +
+            '</p>' +
+            '</div>' +
+            '</div>';
+
+            // add marker with lat and lng from our JSON data
+            var marker_latlng = new google.maps.LatLng(parseFloat(violation_data_by_name[facility_name]["latitude"]), parseFloat(violation_data_by_name[facility_name]["longitude"]));
+          
+            create_marker(marker_latlng, facility_name, content_string);
+        }
+        setMapOnAll(null);
+
+        var heatmap = new google.maps.visualization.HeatmapLayer({
+          data: heatmapcoords
+        });
+        
+        var gradient = [
+          'rgba(128, 255, 0, 0)',
+          'rgba(0, 255, 0, 1)',
+          'rgba(0, 191, 0, 1)',
+          'rgba(0, 127, 255, 1)',
+          'rgba(0, 63, 255, 1)',
+          'rgba(0, 0, 255, 1)',
+          'rgba(0, 0, 223, 1)',
+          'rgba(0, 0, 191, 1)',
+          'rgba(0, 0, 159, 1)',
+          'rgba(0, 0, 127, 1)',
+          'rgba(63, 0, 91, 1)',
+          'rgba(127, 0, 63, 1)',
+          'rgba(191, 0, 31, 1)',
+          'rgba(255, 0, 0, 1)'
+        ]
+        heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
+        heatmap.set('radius', heatmap.get('radius') ? null : 60);
+        heatmap.set('opacity', heatmap.get('opacity') ? null : 3.0);
+        heatmap.setMap(map);
+      }
     });
-  });
+
+       
+
+    // Sets the map on all markers in the array.
+    function setMapOnAll(map) {
+      for (var i = 0; i < markers.length; i++) {
+        markers[i].setMap(map);
+      }
+    }
+
+    // Removes the markers from the map, but keeps them in the array.
+    function clearMarkers() {
+      setMapOnAll(null);
+    }
+
+    // Shows any markers currently in the array.
+    function showMarkers() {
+      setMapOnAll(map);
+    }
   </script>
   <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBy9ULJF2FHGuQfBTAzq9pk6GXp4Eib5MU&signed_in=true&libraries=visualization&callback=initMap">
   </script>
-</body>
+  </body>
+
 </html>
